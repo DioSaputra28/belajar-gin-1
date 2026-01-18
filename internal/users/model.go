@@ -2,7 +2,6 @@ package users
 
 import "gorm.io/gorm"
 
-// User represents a user in the system
 type User struct {
 	gorm.Model
 	Name     string `gorm:"type:varchar(255);not null" json:"name"`
@@ -11,12 +10,9 @@ type User struct {
 	Token    string `gorm:"type:varchar(255)" json:"token,omitempty"`
 }
 
-// TableName overrides the table name used by User to `users`
 func (User) TableName() string {
 	return "users"
 }
-
-// Request DTOs
 type RegisterRequest struct {
 	Name     string `json:"name" binding:"required,min=3,max=100"`
 	Email    string `json:"email" binding:"required,email"`
@@ -33,7 +29,6 @@ type UpdateUserRequest struct {
 	Email string `json:"email" binding:"omitempty,email"`
 }
 
-// Response DTOs
 type UserResponse struct {
 	ID    uint   `json:"id"`
 	Name  string `json:"name"`

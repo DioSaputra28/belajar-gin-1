@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// Address represents an address in the system
 type Address struct {
 	gorm.Model
 	ContactID  uint             `gorm:"not null;index" json:"contact_id"`
@@ -18,12 +17,10 @@ type Address struct {
 	Country    string           `gorm:"type:varchar(100);not null" json:"country"`
 }
 
-// TableName overrides the table name used by Address to `addresses`
 func (Address) TableName() string {
 	return "addresses"
 }
 
-// Request DTOs
 type CreateAddressRequest struct {
 	Street     string `json:"street" binding:"omitempty,max=255"`
 	City       string `json:"city" binding:"omitempty,max=100"`
@@ -40,7 +37,6 @@ type UpdateAddressRequest struct {
 	Country    string `json:"country" binding:"omitempty,max=100"`
 }
 
-// Response DTOs
 type AddressResponse struct {
 	ID         uint   `json:"id"`
 	ContactID  uint   `json:"contact_id"`

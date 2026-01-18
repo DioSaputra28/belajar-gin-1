@@ -15,7 +15,6 @@ type RefreshTokenRequest struct {
 	RefreshToken string `json:"refresh_token" binding:"required"`
 }
 
-// Response DTOs
 type AuthResponse struct {
 	User         UserData `json:"user"`
 	AccessToken  string   `json:"access_token"`
@@ -23,7 +22,7 @@ type AuthResponse struct {
 }
 
 type UserData struct {
-	ID    uint   `json:"id"`
+	ID    uint   `json:"user_id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }

@@ -5,8 +5,6 @@ import (
 
 	"gorm.io/gorm"
 )
-
-// Contact represents a contact in the system
 type Contact struct {
 	gorm.Model
 	UserID    uint       `gorm:"not null;index" json:"user_id"`
@@ -17,12 +15,9 @@ type Contact struct {
 	Phone     string     `gorm:"type:varchar(255)" json:"phone"`
 }
 
-// TableName overrides the table name used by Contact to `contacts`
 func (Contact) TableName() string {
 	return "contacts"
 }
-
-// Request DTOs
 type CreateContactRequest struct {
 	FirstName string `json:"first_name" binding:"required,min=2,max=100"`
 	LastName  string `json:"last_name" binding:"omitempty,max=100"`
@@ -37,7 +32,6 @@ type UpdateContactRequest struct {
 	Phone     string `json:"phone" binding:"omitempty,max=20"`
 }
 
-// Response DTOs
 type ContactResponse struct {
 	ID        uint   `json:"id"`
 	UserID    uint   `json:"user_id"`
