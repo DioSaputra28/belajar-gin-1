@@ -10,6 +10,8 @@ type AuthRepository interface {
 	Register(request RegisterRequest) (AuthResponse, error)
 	Login(email string) (AuthResponse, error)
 	FindUserByEmail(email string) (*users.User, error)
+	FindUserByToken(token string) (*users.User, error)
+	FindUserById(id uint) (*users.User, error)
 }
 
 type authRepository struct {
@@ -64,7 +66,7 @@ func (a *authRepository) Login(email string) (AuthResponse, error) {
 			Name:  user.Name,
 			Email: user.Email,
 		},
-		AccessToken:  "",
+		AccessToken:  token,
 		RefreshToken: "",
 	}, nil
 }
@@ -72,6 +74,22 @@ func (a *authRepository) Login(email string) (AuthResponse, error) {
 func (a *authRepository) FindUserByEmail(email string) (*users.User, error) {
 	var user users.User
 	if err := a.db.Where("email = ?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (a *authRepository) FindUserByToken(token string) (*users.User, error) {
+	var user users.User
+	if err := a.db.Where("token = ?", token).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (a *authRepository) FindUserById(id uint) (*users.User, error) {
+	var user users.User
+	if err := a.db.Where("user_id = ?", id).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
