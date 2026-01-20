@@ -12,7 +12,8 @@ import (
 func NewDB() *gorm.DB {
 	err := godotenv.Load()
 	if err != nil {
-		panic("failed to load .env file")
+		fmt.Println("failed to load .env file")
+		return nil
 	}
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
