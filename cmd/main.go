@@ -2,8 +2,10 @@ package main
 
 import (
 	"github.com/DioSaputra28/belajar-gin-1/config"
+	"github.com/DioSaputra28/belajar-gin-1/internal/addresses"
 	"github.com/DioSaputra28/belajar-gin-1/internal/auth"
 	"github.com/DioSaputra28/belajar-gin-1/internal/common/middleware"
+	"github.com/DioSaputra28/belajar-gin-1/internal/contacts"
 	"github.com/DioSaputra28/belajar-gin-1/internal/users"
 	"github.com/gin-gonic/gin"
 )
@@ -33,6 +35,34 @@ func main() {
 		userAuth.PUT("/:id", userHandler.UpdateUser)
 		userAuth.GET("/:id", userHandler.FindUserById)
 		userAuth.DELETE("/:id", userHandler.DeleteUser)
+	}
+
+	contactRepo := contacts.NewContactRepository(db)
+	contactSvc := contacts.NewContactService(contactRepo)
+	contactHandler := contacts.NewContactHandler(contactSvc)
+
+	contactAuth := router.Group("/contacts")
+	contactAuth.Use(middleware.AuthMiddleware(authRepo))
+	{
+		contactAuth.GET("", contactHandler.GetContacts)
+		contactAuth.POST("", contactHandler.CreateContact)
+		contactAuth.PUT("/:id", contactHandler.UpdateContact)
+		contactAuth.GET("/:id", contactHandler.FindContactById)
+		contactAuth.DELETE("/:id", contactHandler.DeleteContact)
+	}
+
+	addressRepo := addresses.NewAddressRepository(db)
+	addressSvc  := addresses.NewAddressService(addressRepo)
+	addressHandler := addresses.NewAddressHandler(addressSvc)
+
+	addressAuth := router.Group("/addresses")
+	addressAuth.Use(middleware.AuthMiddleware(authRepo))
+	{
+		addressAuth.GET("", addressHandler.GetAddresses)
+		addressAuth.POST("", addressHandler.CreateAddress)
+		addressAuth.PUT("/:id", addressHandler.UpdateAddress)
+		addressAuth.GET("/:id", addressHandler.FindAddressById)
+		addressAuth.DELETE("/:id", addressHandler.DeleteAddress)
 	}
 
 	router.Run(":8081")

@@ -51,15 +51,14 @@ func (h *userHandler) GetUsers(c *gin.Context) {
 		return
 	}
 
-	users, err := h.svc.GetUsers(intPage, intLimit, search)
+	response, err := h.svc.GetUsers(intPage, intLimit, search)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Users found successfully",
-		"data":    users,
-	})
+
+	// Return pagination response langsung
+	c.JSON(http.StatusOK, response)
 }
 
 func (h *userHandler) CreateUser(c *gin.Context) {
@@ -101,7 +100,6 @@ func (h *userHandler) UpdateUser(c *gin.Context) {
 		"data":    user,
 	})
 }
-
 
 func (h *userHandler) FindUserById(c *gin.Context) {
 	id := c.Param("id")

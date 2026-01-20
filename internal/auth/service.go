@@ -75,8 +75,11 @@ func (s *authService) Login(email string, password string) (AuthResponse, error)
 
 func (s *authService) Me(user_id uint) (AuthResponse, error) {
 	user, err := s.repo.FindUserById(user_id)
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return AuthResponse{}, errors.New("user not found")
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return AuthResponse{}, errors.New("user not found")
+		}
+		return AuthResponse{}, err
 	}
 
 	return AuthResponse{

@@ -48,3 +48,11 @@ type CreateUserResonse struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
+
+type GetUsersResponse struct {
+	Data []User `json:"data"`
+	Page int `json:"page"`
+	Limit int `json:"limit"`
+	Total int `json:"total"`
+	TotalPages int `json:"total_pages"`
+}
