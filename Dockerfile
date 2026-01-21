@@ -20,13 +20,16 @@ FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates tzdata
 
-WORKDIR /root/
+WORKDIR /
 
-# Copy the binary from builder
-COPY --from=builder /app/main .
+# Create bin directory
+RUN mkdir -p /bin
 
-# Expose port
-EXPOSE 8081
+# Copy the binary from builder to /bin/app
+COPY --from=builder /app/main /bin/app
+
+# Expose port (dynamic, will use PORT env var)
+EXPOSE 8080
 
 # Run the application
-CMD ["./main"]
+CMD ["/bin/app"]
