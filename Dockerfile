@@ -28,8 +28,15 @@ RUN mkdir -p /bin
 # Copy the binary from builder to /bin/app
 COPY --from=builder /app/main /bin/app
 
+# Copy migration files
+COPY database/migrations /database/migrations
+
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Expose port (dynamic, will use PORT env var)
 EXPOSE 8080
 
-# Run the application
-CMD ["/bin/app"]
+# Run the entrypoint script (will run migrations then start app)
+ENTRYPOINT ["/entrypoint.sh"]
