@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/DioSaputra28/belajar-gin-1/config"
 	"github.com/DioSaputra28/belajar-gin-1/internal/addresses"
 	"github.com/DioSaputra28/belajar-gin-1/internal/auth"
@@ -14,6 +16,22 @@ func main() {
 	router := gin.Default()
 
 	db := config.NewDB()
+	if db == nil {
+		panic("Failed to connect to database")
+	}
+
+	router.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status":  "ok",
+			"message": "Server is running",
+		})
+	})
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status":  "ok",
+			"message": "Welcome to belajar-gin-1 API",
+		})
+	})
 
 	authRepo := auth.NewAuthRepository(db)
 	authSvc := auth.NewAuthService(authRepo)
@@ -52,7 +70,7 @@ func main() {
 	}
 
 	addressRepo := addresses.NewAddressRepository(db)
-	addressSvc  := addresses.NewAddressService(addressRepo)
+	addressSvc := addresses.NewAddressService(addressRepo)
 	addressHandler := addresses.NewAddressHandler(addressSvc)
 
 	addressAuth := router.Group("/addresses")
@@ -65,5 +83,6 @@ func main() {
 		addressAuth.DELETE("/:id", addressHandler.DeleteAddress)
 	}
 
+	fmt.Println("Starting server on :8081...")
 	router.Run(":8081")
 }
