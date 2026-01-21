@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/DioSaputra28/belajar-gin-1/config"
 	"github.com/DioSaputra28/belajar-gin-1/internal/addresses"
@@ -83,6 +84,11 @@ func main() {
 		addressAuth.DELETE("/:id", addressHandler.DeleteAddress)
 	}
 
-	fmt.Println("Starting server on :8081...")
-	router.Run(":8081")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
+	}
+
+	fmt.Printf("Starting server on :%s...\n", port)
+	router.Run(":" + port)
 }

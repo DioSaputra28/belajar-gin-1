@@ -1,0 +1,16 @@
+# Docker ignore file
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+*.md
+!README.md
+.vscode
+.idea
+*.log
+tmp/
+test-build
+belajar-gin-1
+belajar-gin-1-test
+myappbin
